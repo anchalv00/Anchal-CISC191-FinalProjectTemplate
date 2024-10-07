@@ -7,41 +7,45 @@ import java.io.*;
  * This program opens a connection to a computer specified
  * as the first command-line argument.  If no command-line
  * argument is given, it prompts the user for a computer
- * to connect to.  The connection is made to
- * the port specified by LISTENING_PORT.  The program reads one
- * line of text from the connection and then closes the
- * connection.  It displays the text that it read on
- * standard output.  This program is meant to be used with
- * the server program, DateServer, which sends the current
- * date and time on the computer where the server is running.
+ * to connect to.
  */
 
 public class Client {
     private Socket clientSocket;
-    private PrintWriter out;
-    private BufferedReader in;
+    private ObjectOutputStream oStream ;
+    private ObjectInputStream iStream;
 
-    public void startConnection(String ip, int port) throws IOException {
+    /*
+     * Creates a connection with a server and sends a request down a stream
+     * @param a device name and a port number
+     */
+    public void startConnection(String ip, int port) throws Exception {
         clientSocket = new Socket(ip, port);
-        out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        oStream = new ObjectOutputStream(clientSocket.getOutputStream());
+
+        //creates object to send over
+        CustomerRequest request = new CustomerRequest(1);
+
+        //sends request to server
+        oStream.writeObject(request);
+        oStream.flush();
     }
 
-    public CustomerResponse sendRequest() throws Exception {
-        out.println(CustomerRequest.toJSON(new CustomerRequest(1)));
-        return CustomerResponse.fromJSON(in.readLine());
-    }
-
+    /*
+     * Stops the connection by closing the stream and socket connection
+     */
     public void stopConnection() throws IOException {
-        in.close();
-        out.close();
+        oStream.close();
         clientSocket.close();
     }
+
+    /*
+     * Starts and ends a connection with the Server
+     */
     public static void main(String[] args) {
         Client client = new Client();
         try {
-            client.startConnection("127.0.0.1", 4444);
-            System.out.println(client.sendRequest().toString());
+            client.startConnection(InetAddress.getLocalHost().getHostName(), 4444);
             client.stopConnection();
         } catch(Exception e) {
             e.printStackTrace();
