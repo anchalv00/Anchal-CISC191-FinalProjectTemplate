@@ -87,30 +87,21 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         try {
             client.startConnection("127.0.0.1", 4444);
-            boolean continueRunning = true; // Flag to control the loop
-
-            while (continueRunning) {
                 // Shows events you can enter
-                System.out.println("List of all events: ");
-                client.displayEvents();
+            System.out.println("List of all events: ");
+            client.displayEvents();
 
                 // Prompts user to enter event
-                System.out.print("Enter the event and time in this format (event: time): ");
-                String line = scanner.nextLine();
+            System.out.print("Enter the event and time in this format (event: time): ");
+            String line = scanner.nextLine();
 
                 // Updates file
-                client.sendUpdateRequest(line);
+            client.sendUpdateRequest(line);
 
                 // Displays file
-                client.displayFileContents();
-
-                // Ask user if they want to add another time
-                System.out.print("Do you want to add another time? (yes/no): ");
-                String response = scanner.nextLine();
-                continueRunning = response.equalsIgnoreCase("yes");
-            }
-
+            client.displayFileContents();
             client.stopConnection();
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
