@@ -44,7 +44,7 @@ public class Server {
              ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream())) {
 
             // writes content to file
-            edu.sdccd.cisc191.template.UpdateRequest updateRequest = (edu.sdccd.cisc191.template.UpdateRequest) objectIn.readObject();
+            UpdateRequest updateRequest = (UpdateRequest) objectIn.readObject();
             String lineToAdd = updateRequest.getLineToAdd();
             addLineToFile(lineToAdd);
             sendFileContents(out); // Send file contents back to the client
