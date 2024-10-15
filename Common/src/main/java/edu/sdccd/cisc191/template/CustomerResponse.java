@@ -11,7 +11,7 @@ public class CustomerResponse implements Serializable {
     private static WeatherReport[][] weatherReports = new WeatherReport[2][2]; // Two-dimensional array of weather reports
 
     /**
-     * @param requestedCity
+     * @param requestedCity the city written in the terminal
      */
     public CustomerResponse(String requestedCity){
         this.requestedCity = requestedCity;

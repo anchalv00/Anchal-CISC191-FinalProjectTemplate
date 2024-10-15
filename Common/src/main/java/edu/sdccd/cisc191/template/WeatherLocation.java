@@ -8,8 +8,8 @@ public class WeatherLocation extends Location implements Serializable {
     private String weatherCondition;
 
     /**
-     * @param name
-     * @param weatherCondition
+     * @param name location name
+     * @param weatherCondition weather statement
      */
     public WeatherLocation(String name, String weatherCondition) {
         super(name);

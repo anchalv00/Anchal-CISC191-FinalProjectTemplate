@@ -29,6 +29,9 @@ public class CustomerRequest implements Serializable {
         scanner.close();
     }
 
+    /**
+     * @return the city name
+     */
     public String getCity(){
         return city;
     }

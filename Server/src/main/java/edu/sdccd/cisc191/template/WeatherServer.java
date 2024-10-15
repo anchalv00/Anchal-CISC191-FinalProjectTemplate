@@ -32,7 +32,7 @@ public class WeatherServer {
 
     /**
      * completes a series of tasks to handle the client's request
-     * @param clientSocket
+     * @param clientSocket the client socket to receive client info
      */
     private static void handleClientRequest(Socket clientSocket) {
         try (ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
