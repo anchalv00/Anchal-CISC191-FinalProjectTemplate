@@ -40,6 +40,60 @@ public class DisplayFlashcards extends Application{
         return wordCount;
     }
 
+    private Button createButton(String text) {
+        //customizes the buttons
+        Button button = new Button(text);
+        button.setPrefSize(100, 150);
+        button.setStyle("-fx-font-size: 2em; ");
+        return button;
+    }
+
+    private void setupFlipButton(Button flipBtn) {
+        //uses a java lambda expression to act as an event handler
+        //flips the word/meaning when clicked
+        flipBtn.setOnAction(actionEvent ->  {
+            if(currentText.equals(word)){
+                currentText = meaning;
+            } else {
+                currentText = word;
+            }
+            label.setText(currentText);
+        });
+    }
+
+    private void setupNextButton(Button nextBtn) {
+        //displays the next word/meaning
+        nextBtn.setOnAction(actionEvent ->  {
+            if(wordCount < list.length - 1){
+                wordCount++;
+            } else {
+                wordCount = 0; // Reset to start if at the end of list
+            }
+            vocab = list[wordCount];
+            word = vocab.getWord();
+            meaning = vocab.getMeaning();
+            currentText = word;
+            label.setText(currentText);
+        });
+    }
+
+    private void setupQuitButton(Button quitBtn, Stage stage) {
+        //closes the application
+        quitBtn.setOnAction(actionEvent -> stage.close());
+    }
+
+    private void setupRestartButton(Button restartBtn) {
+        restartBtn.setOnAction(actionEvent ->  {
+            //displays the first word
+            wordCount = 0;
+            vocab = list[wordCount];
+            word = vocab.getWord();
+            meaning = vocab.getMeaning();
+            currentText = word;
+            label.setText(currentText);
+        });
+    }
+
     /*
      * displays an application that mimics a flashcard system
      * @param a new Stage
@@ -58,69 +112,24 @@ public class DisplayFlashcards extends Application{
         currentText = word;
         //creates an initial label to display the first word
         label = new Label(currentText);
-        HBox hbox1 = new HBox();
-
         //customizes the label
         label.setFont(new Font(30));
         label.setAlignment(Pos.CENTER);
 
         //creates the buttons
-        Button flipBtn = new Button("Flip");
-        Button nextBtn = new Button("Next");
-        Button quitBtn = new Button("Quit");
-        Button restartBtn = new Button("Restart");
+        Button flipBtn = createButton("Flip");
+        Button nextBtn = createButton("Next");
+        Button quitBtn = createButton("Quit");
+        Button restartBtn = createButton("Restart");
 
-        //customizes the buttons
-        flipBtn.setPrefSize(100, 150);
-        nextBtn.setPrefSize(100, 150);
-        quitBtn.setPrefSize(100, 150);
-        restartBtn.setPrefSize(100, 150);
-
-        flipBtn.setStyle("-fx-font-size: 2em; ");
-        nextBtn.setStyle("-fx-font-size: 2em; ");
-        quitBtn.setStyle("-fx-font-size: 2em; ");
-        restartBtn.setStyle("-fx-font-size: 2em; ");
-
-        //uses a java lambda expression to act as an event handler
-        //flips the word/meaning when clicked
-        flipBtn.setOnAction(actionEvent ->  {
-            if(currentText.equals(word)){
-                currentText = meaning;
-            }else{
-                currentText = word;
-            }
-            label.setText(currentText);
-        });
-
-        //displays the next word/meaning
-        nextBtn.setOnAction(actionEvent ->  {
-            if(wordCount <= list.length){
-                wordCount++;
-            }
-            vocab = list[wordCount];
-            word = vocab.getWord();
-            meaning = vocab.getMeaning();
-            currentText = word;
-            label.setText(currentText);
-        });
-
-        //closes the application
-        quitBtn.setOnAction(actionEvent ->  {
-            stage.close();
-        });
-
-        //displays the first word
-        restartBtn.setOnAction(actionEvent ->  {
-            wordCount = 0;
-            vocab = list[wordCount];
-            word = vocab.getWord();
-            meaning = vocab.getMeaning();
-            currentText = word;
-            label.setText(currentText);
-        });
+        //setup buttons
+        setupFlipButton(flipBtn);
+        setupNextButton(nextBtn);
+        setupQuitButton(quitBtn, stage);
+        setupRestartButton(restartBtn);
 
         //organizes the nodes into a hbox and vbox
-        hbox1 = new HBox(label);
+        HBox hbox1 = new HBox(label);
         hbox1.setAlignment(Pos.CENTER);
         HBox hbox2 = new HBox(flipBtn, nextBtn, restartBtn, quitBtn);
         hbox2.setAlignment(Pos.CENTER);
@@ -128,7 +137,6 @@ public class DisplayFlashcards extends Application{
         hbox2.setSpacing(10);
 
         VBox vbox = new VBox(hbox1, hbox2);
-
         Scene scene = new Scene(vbox, 650, 150, Color.WHITE);
         stage.setTitle("Flashcards");
         stage.setScene(scene);
