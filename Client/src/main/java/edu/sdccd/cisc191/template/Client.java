@@ -15,9 +15,9 @@ public class Client {
     private ObjectOutputStream oStream ;
     private ObjectInputStream iStream;
 
-    /*
+    /**
      * Creates a connection with a server and sends a request down a stream
-     * @param a device name and a port number
+     * @param port device name and a port number
      */
     public void startConnection(String ip, int port) throws Exception {
         clientSocket = new Socket(ip, port);

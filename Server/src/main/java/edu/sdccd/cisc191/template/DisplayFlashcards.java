@@ -11,12 +11,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 
 public class DisplayFlashcards extends Application{
 
     //declares the variables
-    private static ArrayBuilder array;
-    private Vocabulary[] list;
+    private static HashMapBuilder map;
+    private ArrayList<UUID> keysList;
+    private UUID randomKey;
+    private Vocabulary[] vocabList;
     private Vocabulary vocab;
     private String word;
     private String meaning;
@@ -47,13 +52,15 @@ public class DisplayFlashcards extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         //gets the 1D vocab array
-        list = ArrayBuilder.getVocabs();
-        wordCount = 0;
+        vocabList = HashMapBuilder.getVocabsList();
+        keysList = HashMapBuilder.getKeyList();
+        randomKey = HashMapBuilder.chooseRandomKey();
         //gets the first vocab object in the array
-        vocab = list[wordCount];
+        vocab = HashMapBuilder.getVocabByKey(randomKey);
         //gets the word from the vocab object
         word = vocab.getWord();
         meaning = vocab.getMeaning();
+        wordCount = 0;
         b = true;
         currentText = word;
         //creates an initial label to display the first word
@@ -68,7 +75,7 @@ public class DisplayFlashcards extends Application{
         Button flipBtn = new Button("Flip");
         Button nextBtn = new Button("Next");
         Button quitBtn = new Button("Quit");
-        Button restartBtn = new Button("Restart");
+        Button restartBtn = new Button("Restart Studying");
 
         //customizes the buttons
         flipBtn.setPrefSize(100, 150);
@@ -94,14 +101,17 @@ public class DisplayFlashcards extends Application{
 
         //displays the next word/meaning
         nextBtn.setOnAction(actionEvent ->  {
-            if(wordCount <= list.length){
+            if(wordCount <= vocabList.length){
                 wordCount++;
+                randomKey = HashMapBuilder.chooseRandomKey();
+                vocab = HashMapBuilder.getVocabByKey(randomKey);
+                word = vocab.getWord();
+                meaning = vocab.getMeaning();
+                currentText = word;
+                label.setText(currentText);
+            }else{
+                label.setText("Finished studying for today.");
             }
-            vocab = list[wordCount];
-            word = vocab.getWord();
-            meaning = vocab.getMeaning();
-            currentText = word;
-            label.setText(currentText);
         });
 
         //closes the application
@@ -112,7 +122,7 @@ public class DisplayFlashcards extends Application{
         //displays the first word
         restartBtn.setOnAction(actionEvent ->  {
             wordCount = 0;
-            vocab = list[wordCount];
+            vocab = HashMapBuilder.getVocabByKey(randomKey);
             word = vocab.getWord();
             meaning = vocab.getMeaning();
             currentText = word;

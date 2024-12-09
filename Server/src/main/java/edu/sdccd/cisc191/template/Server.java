@@ -29,10 +29,10 @@ public class Server {
         int day = receivedObj.getDay();
 
         //constructs a 1D vocabs array
-        ArrayBuilder.constructVocab(day);
+        HashMapBuilder.buildMap(day);
 
         //makes sure there are enough words in the list to display for the specified day #
-        if((day*3) <= ArrayBuilder.getNumWords()){
+        if((day*3) <= HashMapBuilder.getNumWords()){
             //launches display application
             Application.launch(DisplayFlashcards.class, new String[]{});
         }else{
