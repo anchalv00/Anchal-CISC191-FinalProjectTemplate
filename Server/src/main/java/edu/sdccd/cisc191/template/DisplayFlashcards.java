@@ -1,6 +1,7 @@
 package edu.sdccd.cisc191.template;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,8 +10,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -76,17 +80,24 @@ public class DisplayFlashcards extends Application{
         Button nextBtn = new Button("Next");
         Button quitBtn = new Button("Quit");
         Button restartBtn = new Button("Restart Studying");
+        Button easyBtn = new Button("Easy");
+        Button hardBtn = new Button("Hard");
+
 
         //customizes the buttons
-        flipBtn.setPrefSize(100, 150);
-        nextBtn.setPrefSize(100, 150);
-        quitBtn.setPrefSize(100, 150);
-        restartBtn.setPrefSize(100, 150);
+        flipBtn.setPrefSize(75, 90);
+        nextBtn.setPrefSize(75, 90);
+        quitBtn.setPrefSize(75, 90);
+        restartBtn.setPrefSize(150, 90);
+        easyBtn.setPrefSize(75, 90);
+        hardBtn.setPrefSize(75, 90);
 
-        flipBtn.setStyle("-fx-font-size: 2em; ");
-        nextBtn.setStyle("-fx-font-size: 2em; ");
-        quitBtn.setStyle("-fx-font-size: 2em; ");
-        restartBtn.setStyle("-fx-font-size: 2em; ");
+        flipBtn.setStyle("-fx-font-size: 1em; ");
+        nextBtn.setStyle("-fx-font-size: 1em; ");
+        quitBtn.setStyle("-fx-font-size: 1em; -fx-background-color: #FFB6C1;");
+        restartBtn.setStyle("-fx-font-size: 1em; ");
+        easyBtn.setStyle("-fx-font-size: 1em; -fx-background-color: #90EE90;");
+        hardBtn.setStyle("-fx-font-size: 1em; -fx-background-color: #ADD8E6;");
 
         //uses a java lambda expression to act as an event handler
         //flips the word/meaning when clicked
@@ -103,8 +114,10 @@ public class DisplayFlashcards extends Application{
         nextBtn.setOnAction(actionEvent ->  {
             if(wordCount <= vocabList.length){
                 wordCount++;
-                randomKey = HashMapBuilder.chooseRandomKey();
-                vocab = HashMapBuilder.getVocabByKey(randomKey);
+                while(vocab.getWord().equals(word)) {
+                    randomKey = HashMapBuilder.chooseRandomKey();
+                    vocab = HashMapBuilder.getVocabByKey(randomKey);
+                }
                 word = vocab.getWord();
                 meaning = vocab.getMeaning();
                 currentText = word;
@@ -122,6 +135,7 @@ public class DisplayFlashcards extends Application{
         //displays the first word
         restartBtn.setOnAction(actionEvent ->  {
             wordCount = 0;
+            randomKey = HashMapBuilder.chooseRandomKey();
             vocab = HashMapBuilder.getVocabByKey(randomKey);
             word = vocab.getWord();
             meaning = vocab.getMeaning();
@@ -129,17 +143,35 @@ public class DisplayFlashcards extends Application{
             label.setText(currentText);
         });
 
+        //displays the first word
+        easyBtn.setOnAction(actionEvent ->  {
+            HashMapBuilder.decreaseFrequency(randomKey);
+            label.setText(currentText + " - placed on easy!");
+        });
+
+        //displays the first word
+        hardBtn.setOnAction(actionEvent ->  {
+            HashMapBuilder.increaseFrequency(randomKey);
+            label.setText(currentText + " - placed on hard!");
+        });
+
         //organizes the nodes into a hbox and vbox
+        HBox hbox0 = new HBox(easyBtn, hardBtn);
+        hbox0.setAlignment(Pos.CENTER);
+        hbox0.setPadding(new Insets(20.0f));
+        hbox0.setSpacing(10);
         hbox1 = new HBox(label);
         hbox1.setAlignment(Pos.CENTER);
+        hbox1.setPadding(new Insets(20.0f));
         HBox hbox2 = new HBox(flipBtn, nextBtn, restartBtn, quitBtn);
         hbox2.setAlignment(Pos.CENTER);
+        hbox0.setPadding(new Insets(20.0f));
         //sets the margins between the buttons
         hbox2.setSpacing(10);
 
-        VBox vbox = new VBox(hbox1, hbox2);
+        VBox vbox = new VBox(hbox0, hbox1, hbox2);
 
-        Scene scene = new Scene(vbox, 650, 150, Color.WHITE);
+        Scene scene = new Scene(vbox, 650, 200, Color.WHITE);
         stage.setTitle("Flashcards");
         stage.setScene(scene);
         stage.show();

@@ -2,6 +2,10 @@ package edu.sdccd.cisc191.template;
 
 import java.net.*;
 import java.io.*;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 /**
  * This program opens a connection to a computer specified
@@ -10,10 +14,19 @@ import java.io.*;
  * to connect to.
  */
 
+@SpringBootApplication
 public class Client {
     private Socket clientSocket;
     private ObjectOutputStream oStream ;
     private ObjectInputStream iStream;
+
+    @Bean
+    CommandLineRunner commandLineRunner(CustomerRequestRepository repo){
+        return args -> {
+            CustomerRequest request = new CustomerRequest(4);
+            repo.save(request);
+        };
+    }
 
     /**
      * Creates a connection with a server and sends a request down a stream
@@ -24,7 +37,7 @@ public class Client {
         oStream = new ObjectOutputStream(clientSocket.getOutputStream());
 
         //creates object to send over
-        CustomerRequest request = new CustomerRequest(1);
+        CustomerRequest request = new CustomerRequest(4);
 
         //sends request to server
         oStream.writeObject(request);
@@ -44,6 +57,8 @@ public class Client {
      */
     public static void main(String[] args) {
         Client client = new Client();
+        SpringApplication.run(Client.class, args);
+
         try {
             client.startConnection(InetAddress.getLocalHost().getHostName(), 4444);
             client.stopConnection();

@@ -2,6 +2,7 @@ package edu.sdccd.cisc191.template;
 
 import java.io.Serializable;
 
+//**CLASS IS NO LONGER BEING USED**
 public class ArrayBuilder implements Serializable {
 
     //2D array with words and meanings

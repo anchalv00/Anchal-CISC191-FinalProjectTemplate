@@ -16,9 +16,10 @@ public class HashMapBuilder implements Serializable {
 
     public static void buildMap(int day){
         constructVocab(day);
+        UUID uniqueID;
 
         for(Vocabulary vocab : vocabs) {
-            UUID uniqueID = UUID.randomUUID();
+            uniqueID = UUID.randomUUID();
             map.put(uniqueID, vocab);
             keyList.add(uniqueID);
         }
@@ -38,6 +39,10 @@ public class HashMapBuilder implements Serializable {
 
     public static ArrayList<UUID> getKeyList(){
         return keyList;
+    }
+
+    public static HashMap<UUID, Vocabulary> getMap(){
+        return map;
     }
 
     public static void increaseFrequency(UUID id){
@@ -66,8 +71,8 @@ public class HashMapBuilder implements Serializable {
      * Stores elements in the vocabs array
      * @param an integer that specifies the day request from the client
      */
-    public static void constructVocab(int day){
-        for(int i = 0; i < (3*day); i++){
+    public static void constructVocab(int day) {
+        for (int i = 0; i < (3 * day); i++) {
             vocabs[i] = new Vocabulary(words[0][i], words[1][i]);
         }
     }
@@ -90,9 +95,9 @@ public class HashMapBuilder implements Serializable {
     /*
      * @return a String that prints the contents of the 2D array
      */
-    public static String printAll(){
+    public static String printAll() {
         String string = "";
-        for(int i = 0; i < words[0].length; i++){
+        for (int i = 0; i < words[0].length; i++) {
             string += words[0][i] + " " + words[1][i] + " ";
         }
 
@@ -103,21 +108,33 @@ public class HashMapBuilder implements Serializable {
      * @param a String that wants to be searched
      * @return an int that specifies the index value of a certain String element
      */
-    public static int findIndexOf(String string){
+    public static int findIndexOf(String string) {
         int index = 0;
-        for(int i = 0; i < words[0].length; i++){
-            if(words[1][i].equals(string)){
+        for (int i = 0; i < words[0].length; i++) {
+            if (words[1][i].equals(string)) {
                 index = i;
             }
         }
         return index;
     }
 
+//TESTING - DISREGARD
 
 //    public static void main(String[] args) {
-//        HashMapBuilder.constructVocab(4);
+//        HashMapBuilder.buildMap(4);
 //        Vocabulary[] vocabs = getVocabsList();
+//        ArrayList<UUID> id = HashMapBuilder.getKeyList();
+//        System.out.println(HashMapBuilder.getVocabByKey(HashMapBuilder.chooseRandomKey()).getWord());
+//        System.out.println();
+//        for(UUID key: id){
+//            System.out.println(key);
+//        }
+//        System.out.println(keyList.size());
 //
-//        System.out.print(HashMapBuilder.printAll());
+//
+//        UUID element = UUID.randomUUID();
+//        HashMapBuilder.increaseFrequency(element);
+//
+//        System.out.println(keyList.size());
 //    }
 }
