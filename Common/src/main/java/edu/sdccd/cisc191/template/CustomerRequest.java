@@ -33,6 +33,13 @@ public class CustomerRequest implements Serializable {
     }
 
     /**
+     * @return the id value
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
      * @return a String with the day value
      */
     @Override

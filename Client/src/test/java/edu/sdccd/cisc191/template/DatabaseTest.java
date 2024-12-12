@@ -1,24 +1,37 @@
 package edu.sdccd.cisc191.template;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@EnableJpaRepositories(basePackages = {"edu.sdccd.cisc191.template.CustomerRequestRepository"})
+import java.util.Optional;
+
+
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class DatabaseTest {
+
+    @Autowired
     private CustomerRequestRepository repo;
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testObjectSave() {
         CustomerRequest request = new CustomerRequest(4);
 
         repo.save(request);
-        CustomerRequest data = repo.findById(1L).orElse(null);
+        Optional<CustomerRequest> retrievedData = repo.findById(request.getId());
 
-        assertEquals(4, data.getDay());
+        assertTrue(retrievedData.isPresent());
+        assertEquals(4, retrievedData.get().getDay());
     }
 
 }
