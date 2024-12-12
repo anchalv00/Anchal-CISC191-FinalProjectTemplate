@@ -3,13 +3,14 @@ package edu.sdccd.cisc191.template;
 import java.io.Serializable;
 import javax.persistence.*;
 
-@Entity(name = "Rehicle")
+@Entity(name = "Request")
 @Table(name = "request")
 public class CustomerRequest implements Serializable {
 
     @Column
     private int day;
 
+    //sets the Long variable as the id
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +22,8 @@ public class CustomerRequest implements Serializable {
         this.day = day;
     }
 
-    public CustomerRequest() {
-
-    }
+    //empty constructor
+    public CustomerRequest() {}
 
     /**
      * @return the day value

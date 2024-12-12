@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class CustomerRequestTest {
     private CustomerRequest customerRequest;
 
-    /*
+    /**
      * creates an instance of the CustomerRequest class
      */
     @org.junit.jupiter.api.BeforeEach
@@ -13,16 +13,16 @@ class CustomerRequestTest {
         customerRequest = new CustomerRequest(1);
     }
 
-    /*
-     * tests the toString method in the CustomerRequest class
+    /**
+     * tests the toString() method in the CustomerRequest class
      */
     @org.junit.jupiter.api.Test
     void getCustomerPrint() {
         assertEquals(customerRequest.toString(), "Customer[day=1]");
     }
 
-    /*
-     * tests the getDay method in the CustomerRequest class
+    /**
+     * tests the getDay() method in the CustomerRequest class
      */
     @org.junit.jupiter.api.Test
     void getCustomer() {

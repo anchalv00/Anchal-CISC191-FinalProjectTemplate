@@ -5,16 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ArrayBuilderTest {
     private Vocabulary[] vocab;
 
-    /*
-     * tests the findIndex method in the ArrayBuilder class
+    /**
+     * tests the findIndex() method in the ArrayBuilder class
      */
     @org.junit.jupiter.api.Test
     void getIndex() {
         assertEquals(ArrayBuilder.findIndexOf("cat"), 3);
     }
 
-    /*
-     * tests the printAll method in the ArrayBuilder class
+    /**
+     * tests the printAll() method in the ArrayBuilder class
      */
     @org.junit.jupiter.api.Test
     void print() {

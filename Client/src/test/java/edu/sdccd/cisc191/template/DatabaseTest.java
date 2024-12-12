@@ -22,7 +22,10 @@ class DatabaseTest {
     @Autowired
     private CustomerRequestRepository repo;
 
-
+    /**
+     * saves a CustomerRequest object to the repo and retrieves it to
+     * check the data inside the object
+     */
     @Test
     void testObjectSave() {
         CustomerRequest request = new CustomerRequest(4);

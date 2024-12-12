@@ -35,40 +35,46 @@ public class DisplayFlashcards extends Application{
     private Label label;
     private static int day;
 
-    /*
-     * @param an integer that will be set as the word count
+    /**
+     * @param wordCount integer that will be set as the word count
      */
     public void setWordCount(int wordCount) {
         this.wordCount = wordCount;
     }
 
-    /*
+    /**
      * @return the word count integer
      */
     public int getWordCount() {
         return wordCount;
     }
 
-    /*
+    /**
+     * Displays the Japanese flashcard system using JavaFx
+     *
      * displays an application that mimics a flashcard system
-     * @param a new Stage
+     * @param stage new Stage
      */
     @Override
     public void start(Stage stage) throws Exception {
         //gets the 1D vocab array
         vocabList = HashMapBuilder.getVocabsList();
+        //gets the ArrayList of UUIDs
         keysList = HashMapBuilder.getKeyList();
+        //gets a random UUID
         randomKey = HashMapBuilder.chooseRandomKey();
-        //gets the first vocab object in the array
+        //gets the vocab object associated with the random UUID
         vocab = HashMapBuilder.getVocabByKey(randomKey);
         //gets the word from the vocab object
         word = vocab.getWord();
+        //gets the meaning from the vocab object
         meaning = vocab.getMeaning();
         wordCount = 0;
         b = true;
         currentText = word;
         //creates an initial label to display the first word
         label = new Label(currentText);
+        //creates an HBox for the middle row
         HBox hbox1 = new HBox();
 
         //customizes the label
@@ -82,7 +88,6 @@ public class DisplayFlashcards extends Application{
         Button restartBtn = new Button("Restart Studying");
         Button easyBtn = new Button("Easy");
         Button hardBtn = new Button("Hard");
-
 
         //customizes the buttons
         flipBtn.setPrefSize(75, 90);
@@ -112,9 +117,11 @@ public class DisplayFlashcards extends Application{
 
         //displays the next word/meaning
         nextBtn.setOnAction(actionEvent ->  {
+            //checks if the number of words displayed is the number of vocabs in vocabList
             if(wordCount <= vocabList.length){
                 wordCount++;
                 while(vocab.getWord().equals(word)) {
+                    //gets a new random UUID
                     randomKey = HashMapBuilder.chooseRandomKey();
                     vocab = HashMapBuilder.getVocabByKey(randomKey);
                 }
@@ -135,6 +142,7 @@ public class DisplayFlashcards extends Application{
         //displays the first word
         restartBtn.setOnAction(actionEvent ->  {
             wordCount = 0;
+            //gets a new random UUID
             randomKey = HashMapBuilder.chooseRandomKey();
             vocab = HashMapBuilder.getVocabByKey(randomKey);
             word = vocab.getWord();
@@ -143,13 +151,13 @@ public class DisplayFlashcards extends Application{
             label.setText(currentText);
         });
 
-        //displays the first word
+        //decreases frequency of that word showing up
         easyBtn.setOnAction(actionEvent ->  {
             HashMapBuilder.decreaseFrequency(randomKey);
             label.setText(currentText + " - placed on easy!");
         });
 
-        //displays the first word
+        //increases frequency of that word showing up
         hardBtn.setOnAction(actionEvent ->  {
             HashMapBuilder.increaseFrequency(randomKey);
             label.setText(currentText + " - placed on hard!");

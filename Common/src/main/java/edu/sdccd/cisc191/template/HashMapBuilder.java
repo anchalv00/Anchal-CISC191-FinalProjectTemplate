@@ -15,6 +15,13 @@ public class HashMapBuilder implements Serializable {
     private static ArrayList<UUID> keyList = new ArrayList<UUID>();
     private static int initialKeysCount;
 
+    /**
+     * calls the constructVocab() method to fill the vocabs array with
+     * Vocabulary objects, inserts key-value pairs to the map with the
+     * Vocabulary objects and unique UUID values
+     *
+     * @param day that the Client requested
+     */
     public static void buildMap(int day){
         constructVocab(day);
         UUID uniqueID;
@@ -25,9 +32,19 @@ public class HashMapBuilder implements Serializable {
             keyList.add(uniqueID);
         }
 
+        //stores value of initial number of keys
         initialKeysCount = keyList.size();
     }
 
+    /**
+     * Uses stream API and lambda expression to search for the key
+     * value associated with the Vocabulary object provided in the
+     * parameter
+     *
+     * @param map that stores the UUID-Vocabulary object pairs
+     * @param vocab that is tied to the key being searched for
+     * @return a set that contains the key being serached for
+     */
     public static <UUID, E> Set<UUID> getKeyByVocab(HashMap<UUID, E> map, E vocab){
        return map.entrySet()
                 .stream()
@@ -36,22 +53,33 @@ public class HashMapBuilder implements Serializable {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Retrieves the vocab object associated with id given in parameter
+     *
+     * @param id that is tied to the vocab object being searched for
+     * @return Vocabulary object associated with the id
+     */
     public static Vocabulary getVocabByKey(UUID id){
         return map.get(id);
     }
 
-    public static ArrayList<UUID> getKeyList(){
-        return keyList;
-    }
-
-    public static HashMap<UUID, Vocabulary> getMap(){
-        return map;
-    }
-
+    /**
+     * Increases frequency of a certain id in keyList
+     *
+     * @param id to be added to keyList
+     */
     public static void increaseFrequency(UUID id){
         keyList.add(id);
     }
 
+    /**
+     * Decreases frequency of a certain id in keyList
+     * by using stream API to check the number of times that
+     * id appears in keyList to make sure that there's at least
+     * one of that id in the list
+     *
+     * @param id to be removed from keyList
+     */
     public static void decreaseFrequency(UUID id){
         Map<UUID, Long> countsMap =
                 keyList.stream()
@@ -68,6 +96,9 @@ public class HashMapBuilder implements Serializable {
         }
     }
 
+    /**
+     * @return UUID value selected randomly from keyList
+     */
     public static UUID chooseRandomKey(){
         Random random = new Random();
         int randomNum = random.nextInt(keyList.size());
@@ -75,9 +106,10 @@ public class HashMapBuilder implements Serializable {
         return keyList.get(randomNum);
     }
 
-    /*
+    /**
      * Stores elements in the vocabs array
-     * @param an integer that specifies the day request from the client
+     *
+     * @param day that specifies the day request from the client
      */
     public static void constructVocab(int day) {
         for (int i = 0; i < (3 * day); i++) {
@@ -85,14 +117,28 @@ public class HashMapBuilder implements Serializable {
         }
     }
 
-    /*
+    /**
      * @return a Vocabulary 1D array
      */
     public static Vocabulary[] getVocabsList() {
         return vocabs;
     }
 
-    /*
+    /**
+     * @returns ArrayList containing UUID values
+     */
+    public static ArrayList<UUID> getKeyList(){
+        return keyList;
+    }
+
+    /**
+     * @return map containing UUID-Vocabulary object pairs
+     */
+    public static HashMap<UUID, Vocabulary> getMap(){
+        return map;
+    }
+
+    /**
      * @return the number of words/meanings in the 2d array
      */
     public static int getNumWords() {
@@ -100,7 +146,7 @@ public class HashMapBuilder implements Serializable {
         return numWords;
     }
 
-    /*
+    /**
      * @return a String that prints the contents of the 2D array
      */
     public static String printAll() {
@@ -112,8 +158,8 @@ public class HashMapBuilder implements Serializable {
         return string;
     }
 
-    /*
-     * @param a String that wants to be searched
+    /**
+     * @param string that wants to be searched
      * @return an int that specifies the index value of a certain String element
      */
     public static int findIndexOf(String string) {
@@ -126,7 +172,8 @@ public class HashMapBuilder implements Serializable {
         return index;
     }
 
-//TESTING - DISREGARD
+
+//**TESTING - DISREGARD**
 
 //    public static void main(String[] args) {
 //        HashMapBuilder.buildMap(4);

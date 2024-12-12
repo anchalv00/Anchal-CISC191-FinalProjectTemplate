@@ -11,11 +11,17 @@ public class ThreadHandler implements Runnable {
     private ObjectInputStream iStream;
     private int day;
 
-
+    /**
+     * @param clientSocket
+     */
     public ThreadHandler(Socket clientSocket){
         this.clientSocket = clientSocket;
     }
 
+    /**
+     * executes a response to the client request using threads that
+     * act simultaneously
+     */
     @Override
     public void run(){
         try {
@@ -31,10 +37,11 @@ public class ThreadHandler implements Runnable {
                 e.printStackTrace();
             }
 
-            //constructs a 1D vocabs array
+            //fills map with UUID-Vocabulary object pairs
             HashMapBuilder.buildMap(day);
 
             Vocabulary[] vocabs = HashMapBuilder.getVocabsList();
+
             //makes sure there are enough words in the list to display for the specified day #
             if((day*3) <= HashMapBuilder.getNumWords()){
                 for(Vocabulary vocab: vocabs){
@@ -49,6 +56,7 @@ public class ThreadHandler implements Runnable {
             e.printStackTrace();
         } finally {
             try {
+                //closes socket and stream
                 clientSocket.close();
                 iStream.close();
             } catch (IOException e) {

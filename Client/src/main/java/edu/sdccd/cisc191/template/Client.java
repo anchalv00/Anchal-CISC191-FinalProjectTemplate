@@ -20,6 +20,12 @@ public class Client {
     private ObjectOutputStream oStream ;
     private ObjectInputStream iStream;
 
+    /**
+     * Stores objects to database using springboot
+     *
+     * @param repo to store objects
+     * @return
+     */
     @Bean
     CommandLineRunner commandLineRunner(CustomerRequestRepository repo){
         return args -> {
@@ -44,7 +50,7 @@ public class Client {
         oStream.flush();
     }
 
-    /*
+    /**
      * Stops the connection by closing the stream and socket connection
      */
     public void stopConnection() throws IOException {
@@ -52,7 +58,7 @@ public class Client {
         clientSocket.close();
     }
 
-    /*
+    /**
      * Starts and ends a connection with the Server
      */
     public static void main(String[] args) {
@@ -66,5 +72,5 @@ public class Client {
             e.printStackTrace();
         }
     }
-} //end class Client
+}
 

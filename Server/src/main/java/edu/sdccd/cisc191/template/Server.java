@@ -16,8 +16,11 @@ public class Server{
     //private ObjectInputStream iStream;
     private ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
-    /*
-     * @param the port number
+    /**
+     * Server connects with incoming client requests and
+     * creates threads to handle the requests act simultaneously
+     *
+     * @param port number
      */
     public void start(int port) throws Exception {
         serverSocket = new ServerSocket(port);
@@ -28,20 +31,16 @@ public class Server{
             // Use thread pool
             threadPool.submit(new ThreadHandler(clientSocket));
         }
-
-            //accepts a connection
-        //clientSocket = serverSocket.accept();
-
-
     }
-    /*
-     * closes the connection and streams
+
+    /**
+     * closes the connection
      */
     public void stop() throws IOException {
         serverSocket.close();
     }
 
-    /*
+    /**
      * allows for a connection to occur
      */
     public static void main(String[] args) {
@@ -54,4 +53,4 @@ public class Server{
         }
     }
 
-} //end class Server
+}
