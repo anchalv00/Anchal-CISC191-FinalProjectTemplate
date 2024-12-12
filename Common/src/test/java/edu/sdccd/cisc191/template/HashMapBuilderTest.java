@@ -8,96 +8,73 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class HashMapBuilderTest {
-    private ArrayList<UUID> keysList;
-    private HashMap<UUID, Vocabulary> map;
-    private Vocabulary[] vocabList;
-    private Set<UUID> set;
+    private static ArrayList<UUID> keysList;
+    private static HashMap<UUID, Vocabulary> map;
+    private static Vocabulary[] vocabList;
 
-
-//    @BeforeEach
-//    public void setUp() {
-//        HashMapBuilder.buildMap(4);
-//        map = HashMapBuilder.getMap();
-//        vocabList = HashMapBuilder.getVocabsList();
-//        keysList = HashMapBuilder.getKeyList();
-//    }
-
-    @org.junit.jupiter.api.Test
-    void testBuildMap() {
-        HashMapBuilder.buildMap(4);
-        vocabList = HashMapBuilder.getVocabsList();
-
-        assertEquals(12, vocabList.length);
-    }
-
-    @org.junit.jupiter.api.Test
-    void testGetKeyByVocab() {
+    @BeforeAll
+    public static void setUp() {
         HashMapBuilder.buildMap(4);
         map = HashMapBuilder.getMap();
         vocabList = HashMapBuilder.getVocabsList();
         keysList = HashMapBuilder.getKeyList();
+    }
 
-        set = HashMapBuilder.getKeyByVocab(map, vocabList[0]);
+    @Test
+    void testBuildMap() {
+        assertEquals(12, vocabList.length);
+    }
+
+    @Test
+    void testGetKeyByVocab() {
+        Set<UUID> set = HashMapBuilder.getKeyByVocab(map, vocabList[0]);
         UUID element = UUID.randomUUID();
         for (UUID key : set) {
             element = key;
         }
 
-        assertEquals(element, keysList.get(0));
+        assertEquals(keysList.get(0), element);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testGetVocabByKey() {
-        HashMapBuilder.buildMap(4);
-        map = HashMapBuilder.getMap();
-        vocabList = HashMapBuilder.getVocabsList();
-        keysList = HashMapBuilder.getKeyList();
-
         UUID element = keysList.get(0);
 
-        assertEquals(HashMapBuilder.getVocabByKey(element), vocabList[0]);
+        assertEquals(vocabList[0].getWord(), HashMapBuilder.getVocabByKey(element).getWord());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testIncreaseFrequency() {
-        HashMapBuilder.buildMap(4);
-        map = HashMapBuilder.getMap();
-        vocabList = HashMapBuilder.getVocabsList();
-        keysList = HashMapBuilder.getKeyList();
-
-        //UUID element = UUID.randomUUID();
         HashMapBuilder.increaseFrequency(keysList.get(0));
-        keysList = HashMapBuilder.getKeyList();
 
         assertEquals(13, keysList.size());
-    }
-
-    @org.junit.jupiter.api.Test
-    void testDecreaseFrequency() {
-        HashMapBuilder.buildMap(4);
-        map = HashMapBuilder.getMap();
-        vocabList = HashMapBuilder.getVocabsList();
-        keysList = HashMapBuilder.getKeyList();
-
-        //UUID element = UUID.randomUUID();
-        HashMapBuilder.increaseFrequency(keysList.get(0));
 
         HashMapBuilder.decreaseFrequency(keysList.get(0));
-        keysList = HashMapBuilder.getKeyList();
 
         assertEquals(12, keysList.size());
     }
 
-    @org.junit.jupiter.api.Test
-    void testChooseRandomKey () {
-        HashMapBuilder.buildMap(4);
-        map = HashMapBuilder.getMap();
-        vocabList = HashMapBuilder.getVocabsList();
-        keysList = HashMapBuilder.getKeyList();
+    @Test
+    void testDecreaseFrequency() {
+        HashMapBuilder.increaseFrequency(keysList.get(0));
+        HashMapBuilder.increaseFrequency(keysList.get(0));
 
+        HashMapBuilder.decreaseFrequency(keysList.get(0));
+
+        assertEquals(13, keysList.size());
+
+        HashMapBuilder.decreaseFrequency(keysList.get(0));
+
+        assertEquals(12, keysList.size());
+    }
+
+    @Test
+    void testChooseRandomKey () {
         UUID random = HashMapBuilder.chooseRandomKey();
 
         assertTrue(keysList.contains(random));

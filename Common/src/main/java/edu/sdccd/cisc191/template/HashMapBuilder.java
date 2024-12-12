@@ -13,6 +13,7 @@ public class HashMapBuilder implements Serializable {
     private static int numWords;
     private static HashMap<UUID, Vocabulary> map = new HashMap<>();
     private static ArrayList<UUID> keyList = new ArrayList<UUID>();
+    private static int initialKeysCount;
 
     public static void buildMap(int day){
         constructVocab(day);
@@ -23,6 +24,8 @@ public class HashMapBuilder implements Serializable {
             map.put(uniqueID, vocab);
             keyList.add(uniqueID);
         }
+
+        initialKeysCount = keyList.size();
     }
 
     public static <UUID, E> Set<UUID> getKeyByVocab(HashMap<UUID, E> map, E vocab){
@@ -56,7 +59,12 @@ public class HashMapBuilder implements Serializable {
 
         Long count = countsMap.get(id);
         if(count != 1){
-            keyList.remove(id);
+            for(int i = initialKeysCount; i < keyList.size(); i++){
+                if(keyList.get(i).equals(id)){
+                    keyList.remove(i);
+                    break;
+                }
+            }
         }
     }
 
